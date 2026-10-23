@@ -7,7 +7,7 @@
     <title>October 18, 2026 (passphrase hint: +126 after 12th of may)</title>
 
     <meta name="theme-color" content="#f8fafc">
-    <meta name="description" content="Open or copy the saved link.">
+    <meta name="description" content="Open or copy the saved encrypted note link. Limited access: two openings, one minute per opening. Expires October 24, 2026, at 8 PM.">
 
     <style>
         :root {
@@ -22,6 +22,12 @@
             --code-background: #f1f5f9;
             --code-text: #4338ca;
             --success: #15803d;
+
+            --warning-background: #fffbeb;
+            --warning-border: #fcd34d;
+            --warning-accent: #d97706;
+            --warning-heading: #92400e;
+            --warning-text: #78350f;
         }
 
         * {
@@ -35,6 +41,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             background:
                 radial-gradient(
                     circle at 10% 10%,
@@ -47,9 +54,17 @@
                     transparent 35%
                 ),
                 var(--background);
+
             color: var(--text);
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-                Roboto, sans-serif;
+
+            font-family:
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                sans-serif;
+
             -webkit-font-smoothing: antialiased;
         }
 
@@ -61,24 +76,33 @@
         .card {
             padding: clamp(24px, 5vw, 44px);
             overflow: hidden;
+
             background: var(--surface);
+
             border: 1px solid rgba(226, 232, 240, 0.9);
             border-radius: 24px;
+
             box-shadow:
                 0 20px 60px rgba(15, 23, 42, 0.06),
                 0 2px 8px rgba(15, 23, 42, 0.025);
         }
 
+        /* Saved link badge */
+
         .badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
+
             margin-bottom: 22px;
             padding: 8px 13px;
+
             border: 1px solid #e0e7ff;
             border-radius: 999px;
+
             background: #eef2ff;
             color: #4338ca;
+
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.07em;
@@ -88,23 +112,121 @@
         .badge-dot {
             width: 7px;
             height: 7px;
+            flex-shrink: 0;
+
             border-radius: 50%;
             background: #6366f1;
         }
 
+        /* Important expiration notice */
+
+        .expiry-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+
+            margin-bottom: 28px;
+            padding: 20px;
+
+            background: var(--warning-background);
+
+            border: 1px solid var(--warning-border);
+            border-left: 4px solid var(--warning-accent);
+            border-radius: 14px;
+        }
+
+        .expiry-icon {
+            flex-shrink: 0;
+
+            font-size: 22px;
+            line-height: 1.5;
+        }
+
+        .expiry-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .expiry-content h2 {
+            margin: 0 0 12px;
+
+            color: var(--warning-heading);
+
+            font-size: 16px;
+            font-weight: 750;
+            line-height: 1.5;
+        }
+
+        .expiry-content ul {
+            margin: 0;
+            padding-left: 20px;
+
+            color: var(--warning-text);
+
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .expiry-content li {
+            padding-left: 2px;
+            margin-bottom: 5px;
+        }
+
+        .expiry-content li:last-child {
+            margin-bottom: 0;
+        }
+
+        .expiry-content strong {
+            font-weight: 750;
+        }
+
+        .expiry-reminder {
+            margin: 14px 0 0;
+            padding-top: 12px;
+
+            border-top: 1px solid var(--warning-border);
+
+            color: var(--warning-heading);
+
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .expiry-deadline {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 10px;
+
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+
+            background: #fef3c7;
+            color: #92400e;
+
+            font-size: 12px;
+            font-weight: 750;
+        }
+
+        /* Page heading */
+
         h1 {
             margin: 0 0 16px;
+
             color: #0f172a;
+
             font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 750;
             line-height: 1.25;
             letter-spacing: -0.045em;
+
             overflow-wrap: anywhere;
         }
 
         .description {
             margin: 0 0 32px;
+
             color: var(--muted);
+
             font-size: 15px;
             line-height: 1.8;
         }
@@ -112,28 +234,44 @@
         .section-label {
             display: block;
             margin-bottom: 10px;
+
             color: #334155;
+
             font-size: 13px;
             font-weight: 700;
         }
 
+        /* URL display */
+
         .url-box {
             position: relative;
+
             margin-bottom: 24px;
             padding: 18px;
+
             overflow-wrap: anywhere;
             word-break: break-word;
+
             background: var(--code-background);
+
             border: 1px solid var(--border);
             border-radius: 14px;
         }
 
         .url-box code {
             color: var(--code-text);
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+            font-family:
+                "SFMono-Regular",
+                Consolas,
+                "Liberation Mono",
+                monospace;
+
             font-size: 13px;
             line-height: 1.9;
         }
+
+        /* Buttons */
 
         .actions {
             display: flex;
@@ -143,24 +281,32 @@
 
         .button {
             display: inline-flex;
+
             flex: 1 1 160px;
             min-height: 48px;
+
             align-items: center;
             justify-content: center;
             gap: 10px;
+
             padding: 12px 20px;
+
             border: 1px solid transparent;
             border-radius: 12px;
+
             font-family: inherit;
             font-size: 14px;
             font-weight: 650;
+
             text-decoration: none;
             cursor: pointer;
+
             transition:
                 background 180ms ease,
                 border-color 180ms ease,
                 box-shadow 180ms ease,
                 transform 180ms ease;
+
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -180,17 +326,21 @@
         .button-primary {
             background: var(--accent);
             color: #ffffff;
+
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.16);
         }
 
         .button-primary:hover {
             background: var(--accent-hover);
+
             box-shadow: 0 6px 16px rgba(79, 70, 229, 0.22);
         }
 
         .button-secondary {
             background: #ffffff;
+
             border-color: #cbd5e1;
+
             color: #334155;
         }
 
@@ -199,10 +349,14 @@
             border-color: #a5b4fc;
         }
 
+        /* Clipboard feedback */
+
         .feedback {
             min-height: 20px;
             margin: 16px 0 0;
+
             color: var(--success);
+
             font-size: 13px;
             font-weight: 600;
             text-align: center;
@@ -211,6 +365,8 @@
         .feedback:empty {
             display: none;
         }
+
+        /* Mobile layout */
 
         @media (max-width: 480px) {
             body {
@@ -224,6 +380,20 @@
 
             .description {
                 margin-bottom: 26px;
+            }
+
+            .expiry-notice {
+                gap: 10px;
+                padding: 16px 12px;
+            }
+
+            .expiry-content h2 {
+                font-size: 15px;
+            }
+
+            .expiry-content ul,
+            .expiry-reminder {
+                font-size: 12px;
             }
 
             .actions {
@@ -243,6 +413,8 @@
                 font-size: 12px;
             }
         }
+
+        /* Respect accessibility preferences */
 
         @media (prefers-reduced-motion: reduce) {
             *,
@@ -264,14 +436,66 @@
                 Saved Link
             </div>
 
-            <h1 id="page-heading">October 18, 2026 (passphrase hint: +126 after 12th of may)</h1>
+            <!-- Important access and expiration warning -->
+
+            <aside
+                class="expiry-notice"
+                role="note"
+                aria-labelledby="expiry-heading"
+            >
+                <div class="expiry-icon" aria-hidden="true">
+                    ⚠️
+                </div>
+
+                <div class="expiry-content">
+                    <h2 id="expiry-heading">
+                        Important: Limited Access
+                    </h2>
+
+                    <ul>
+                        <li>
+                            <strong>Opening limit:</strong>
+                            The encrypted note can be opened a maximum of
+                            <strong>2 times</strong>.
+                        </li>
+
+                        <li>
+                            <strong>Time limit:</strong>
+                            Each opening is available for
+                            <strong>1 minute only</strong>.
+                        </li>
+
+                        <li>
+                            <strong>Expiration:</strong>
+                            The link expires permanently after
+                            <strong>8:00 PM on October 24, 2026</strong>.
+                        </li>
+                    </ul>
+
+                    <p class="expiry-reminder">
+                        Please open the link only when you are ready to
+                        read the note. Make sure to finish reading within
+                        the available time.
+                    </p>
+
+                    <div class="expiry-deadline">
+                        DEADLINE: OCT 24, 2026 · 8:00 PM
+                    </div>
+                </div>
+            </aside>
+
+            <h1 id="page-heading">
+                October 18, 2026 (passphrase hint: +126 after 12th of may)
+            </h1>
 
             <p class="description">
-                Your link is ready. Open it in a new tab or copy the complete URL
-                to your clipboard for later use.
+                Your link is ready. Open it in a new tab or copy the
+                complete URL to your clipboard for later use.
             </p>
 
-            <label class="section-label" for="target-url">Target URL</label>
+            <label class="section-label" for="target-url">
+                Target URL
+            </label>
 
             <div class="url-box">
                 <code id="target-url">https://burnpony.app/n/4Hh-ixwcs978KkNrK3L3Yg#GqAFwAvAUr1UWcGHc71ZS1TQhhG-5Sd0E3SgtIH9ar0.p</code>
@@ -299,6 +523,7 @@
                         <path d="M10 14 21 3"></path>
                         <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"></path>
                     </svg>
+
                     Open Link
                 </a>
 
@@ -318,10 +543,22 @@
                         stroke-linejoin="round"
                         aria-hidden="true"
                     >
-                        <rect x="8" y="8" width="13" height="13" rx="2"></rect>
-                        <path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path>
+                        <rect
+                            x="8"
+                            y="8"
+                            width="13"
+                            height="13"
+                            rx="2"
+                        ></rect>
+
+                        <path
+                            d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
+                        ></path>
                     </svg>
-                    <span id="copy-button-text">Copy Link</span>
+
+                    <span id="copy-button-text">
+                        Copy Link
+                    </span>
                 </button>
             </div>
 
@@ -351,7 +588,10 @@
 
             function showFeedback(message, isError = false) {
                 feedback.textContent = message;
-                feedback.style.color = isError ? "#b91c1c" : "#15803d";
+
+                feedback.style.color = isError
+                    ? "#b91c1c"
+                    : "#15803d";
 
                 clearTimeout(feedbackTimer);
 
@@ -368,26 +608,37 @@
                         const textArea = document.createElement("textarea");
 
                         textArea.value = TARGET_URL;
+
                         textArea.setAttribute("readonly", "");
+
                         textArea.style.position = "fixed";
                         textArea.style.top = "0";
                         textArea.style.left = "-9999px";
                         textArea.style.opacity = "0";
 
                         document.body.appendChild(textArea);
+
                         textArea.focus();
                         textArea.select();
-                        textArea.setSelectionRange(0, textArea.value.length);
+
+                        textArea.setSelectionRange(
+                            0,
+                            textArea.value.length
+                        );
 
                         const copied = document.execCommand("copy");
+
                         textArea.remove();
 
                         if (!copied) {
-                            throw new Error("Copy command was unsuccessful.");
+                            throw new Error(
+                                "Copy command was unsuccessful."
+                            );
                         }
                     }
 
                     copyButtonText.textContent = "Copied!";
+
                     showFeedback("✓ Link copied to clipboard!");
 
                     clearTimeout(buttonTimer);
