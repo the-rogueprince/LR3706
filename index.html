@@ -9,6 +9,19 @@
     <meta name="theme-color" content="#f8fafc">
     <meta name="description" content="Open or copy the saved encrypted note link. Limited access: two openings, one minute per opening. Expires October 24, 2026, at 8 PM.">
 
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQB5J29NLQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            window.dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-FQB5J29NLQ');
+    </script>
+
     <style>
         :root {
             color-scheme: light;
@@ -504,6 +517,7 @@
             <div class="actions">
                 <a
                     class="button button-primary"
+                    id="open-link-button"
                     href="https://burnpony.app/n/4Hh-ixwcs978KkNrK3L3Yg#GqAFwAvAUr1UWcGHc71ZS1TQhhG-5Sd0E3SgtIH9ar0.p"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -582,9 +596,20 @@
             const copyButton = document.getElementById("copy-button");
             const copyButtonText = document.getElementById("copy-button-text");
             const feedback = document.getElementById("feedback");
+            const openLinkButton = document.getElementById("open-link-button");
 
             let feedbackTimer;
             let buttonTimer;
+
+            // Track clicks on Open Link.
+            // This does not prove that the destination loaded or was read.
+            openLinkButton.addEventListener("click", () => {
+                if (typeof window.gtag === "function") {
+                    window.gtag("event", "open_note_click", {
+                        transport_type: "beacon"
+                    });
+                }
+            });
 
             function showFeedback(message, isError = false) {
                 feedback.textContent = message;
@@ -635,6 +660,13 @@
                                 "Copy command was unsuccessful."
                             );
                         }
+                    }
+
+                    // Track successful copy operations.
+                    if (typeof window.gtag === "function") {
+                        window.gtag("event", "copy_link_click", {
+                            transport_type: "beacon"
+                        });
                     }
 
                     copyButtonText.textContent = "Copied!";
